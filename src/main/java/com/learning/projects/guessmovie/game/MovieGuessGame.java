@@ -81,40 +81,20 @@ public class MovieGuessGame {
 
     private void updateBlanks(char guessedCharacter) {
         String movieName = this.pickedMovie.getName();
-        char[] chars = movieName.toCharArray();
-        final StringBuilder builder = new StringBuilder();
-        for (char ch : chars) {
-            if (guessedCharacter == ch || ch == 32) {
-                builder.append(ch);
-            } else {
-                builder.append("-");
+
+        char[] movieNameChars = movieName.toCharArray();
+        char[] blankChars = this.blanks.toCharArray();
+
+        for (int i = 0; i < movieNameChars.length; i++) {
+            char ch;
+            if ((ch = movieNameChars[i]) == guessedCharacter || ch == 32) {
+                if (blankChars[i] == '-') {
+                    blankChars[i] = ch;
+                }
             }
         }
-        this.blanks = mergeBlanks(this.blanks, builder.toString());
-    }
 
-    private String mergeBlanks(String oldStr, String newStr) {
-        if (oldStr == null || newStr == null)
-            return "";
-        if (oldStr.length() != newStr.length())
-            return "";
-
-        char[] oldChars = oldStr.toCharArray();
-        char[] newChars = newStr.toCharArray();
-
-        char[] result = new char[oldChars.length];
-
-        for (int i = 0; i < oldChars.length; i++) {
-            if (oldChars[i] == '-' && newChars[i] == '-') {
-                result[i] = '-';
-            } else {
-                if (oldChars[i] != '-')
-                    result[i] = oldChars[i];
-                else if (newChars[i] != '-')
-                    result[i] = newChars[i];
-            }
-        }
-        return new String(result);
+        this.blanks = String.valueOf(blankChars);
     }
 
     private void checkGameStarted() {
