@@ -24,11 +24,10 @@ public class GuessTheMovie implements Runnable {
 
     @Override
     public void run() {
-        GuessTheMovie guessTheMovie = new GuessTheMovie();
         Path filePath = Paths.get("src", "main", "resources", FILE_PATH);
         List<Movie> movies = readFile(filePath, lines -> lines.map(Movie::new).collect(Collectors.toList()));
         Movie randomMovie = movies.get(new Random().nextInt(movies.size()));
-        guessTheMovie.playGame(randomMovie);
+        playGame(randomMovie);
     }
 
     private void playGame(Movie pickedMovie) {
