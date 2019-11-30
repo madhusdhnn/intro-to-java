@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MovieGuessGame implements Game {
+public class MovieGuessGame {
 
     private static final MovieGuessGame INSTANCE = new MovieGuessGame();
     private static final int CHANCES = 10;
@@ -46,14 +46,12 @@ public class MovieGuessGame implements Game {
         return completed;
     }
 
-    @Override
     public void start(Movie pickedMovie) {
         this.pickedMovie = pickedMovie;
         this.started = true;
         this.blanks = getInitialBlanks(pickedMovie.getName().length());
     }
 
-    @Override
     public boolean guess(char ch) {
         checkGameStarted();
         String name = pickedMovie.getName();
@@ -73,7 +71,6 @@ public class MovieGuessGame implements Game {
         return true;
     }
 
-    @Override
     public Result stop() {
         checkGameStarted();
         String name = pickedMovie.getName();
