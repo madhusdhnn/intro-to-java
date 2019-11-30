@@ -57,7 +57,7 @@ public class MovieGuessGame {
         String name = pickedMovie.getName();
         String character = String.valueOf(ch);
         if (name.contains(character)) {
-            if (!this.blanks.contains(character))
+            if (blanks.indexOf(ch) == -1)
                 updateBlanks(ch);
             if (this.blanks.equalsIgnoreCase(name)) {
                 completed = true;
