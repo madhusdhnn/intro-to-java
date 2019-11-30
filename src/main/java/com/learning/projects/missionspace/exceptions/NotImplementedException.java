@@ -1,4 +1,4 @@
-package com.learning.missionspace.exceptions;
+package com.learning.projects.missionspace.exceptions;
 
 public class NotImplementedException extends RuntimeException {
 

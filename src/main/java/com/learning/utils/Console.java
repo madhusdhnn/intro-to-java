@@ -1,16 +1,17 @@
 package com.learning.utils;
 
-import java.io.PrintStream;
-
 public class Console {
 
-    private static final PrintStream out = System.out;
-
-    private Console() {
+    public static void log(String message) {
+        log(message, false);
     }
 
-    public static void log(String message) {
-        out.println(message);
+    public static void log(String message, boolean showThreadName) {
+        if (showThreadName) {
+            System.out.println(String.format("[%s] %s", Thread.currentThread().getName(), message));
+        } else {
+            System.out.println(String.format("%s", message));
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.learning.guessmovie.data;
+package com.learning.projects.guessmovie.data;
 
 
 import java.util.Objects;

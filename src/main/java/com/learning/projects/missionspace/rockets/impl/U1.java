@@ -1,22 +1,22 @@
-package com.learning.missionspace.rockets.impl;
+package com.learning.projects.missionspace.rockets.impl;
 
-import com.learning.missionspace.rockets.Rocket;
+import com.learning.projects.missionspace.rockets.Rocket;
 
 import java.util.Objects;
 import java.util.Random;
 
-public class U2 extends Rocket {
+public class U1 extends Rocket {
 
-    private static final int ROCKET_WEIGHT = 18 * 1000; // tonnes to kgs
-    private static final int MAX_WEIGHT = 29 * 1000; // tonnes to kgs
+    private static final int ROCKET_WEIGHT = 10 * 1000; // tonnes to kgs
+    private static final int MAX_WEIGHT = 18 * 1000; // tonnes to kgs
     private static final int CARGO_WEIGHT = MAX_WEIGHT - ROCKET_WEIGHT; // in kgs
-    private static final int COST = 120_000_000;
+    private static final int COST = 100_000_000;
 
     private double chanceOfLaunchExplosion;
     private double chanceOfLandingCrash;
     private int totalWeight;
 
-    public U2() {
+    public U1() {
         this.totalWeight = 0;
         this.chanceOfLaunchExplosion = 0.0;
         this.chanceOfLandingCrash = 0.0;
@@ -49,12 +49,12 @@ public class U2 extends Rocket {
 
     @Override
     public void setChanceOfLaunchExplosion() {
-        chanceOfLaunchExplosion = 0.04 * ((double) getTotalWeight() / getMaxWeight());
+        chanceOfLaunchExplosion = 0.05 * ((double) getTotalWeight() / getMaxWeight());
     }
 
     @Override
     public void setChanceOfLandingCrash() {
-        chanceOfLandingCrash = 0.08 * ((double) getTotalWeight() / getMaxWeight());
+        chanceOfLandingCrash = 0.01 * ((double) getTotalWeight() / getMaxWeight());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class U2 extends Rocket {
 
     @Override
     public String toString() {
-        return "U2{" +
+        return "U1{" +
                 "chanceOfLaunchExplosion=" + chanceOfLaunchExplosion +
                 ", chanceOfLandingCrash=" + chanceOfLandingCrash +
                 ", totalWeight=" + totalWeight +
@@ -75,15 +75,14 @@ public class U2 extends Rocket {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        U2 u2 = (U2) o;
-        return Double.compare(u2.chanceOfLaunchExplosion, chanceOfLaunchExplosion) == 0 &&
-                Double.compare(u2.chanceOfLandingCrash, chanceOfLandingCrash) == 0 &&
-                totalWeight == u2.totalWeight;
+        U1 u1 = (U1) o;
+        return Double.compare(u1.chanceOfLaunchExplosion, chanceOfLaunchExplosion) == 0 &&
+                Double.compare(u1.chanceOfLandingCrash, chanceOfLandingCrash) == 0 &&
+                totalWeight == u1.totalWeight;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(chanceOfLaunchExplosion, chanceOfLandingCrash, totalWeight);
     }
-
 }

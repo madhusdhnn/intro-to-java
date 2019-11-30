@@ -1,4 +1,4 @@
-package com.learning.guessmovie.game;
+package com.learning.projects.guessmovie.game;
 
 public class Result {
 

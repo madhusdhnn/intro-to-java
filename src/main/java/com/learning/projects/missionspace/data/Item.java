@@ -1,4 +1,4 @@
-package com.learning.missionspace.data;
+package com.learning.projects.missionspace.data;
 
 import java.util.Objects;
 

@@ -1,9 +1,9 @@
-package com.learning.missionspace.simulation;
+package com.learning.projects.missionspace.simulation;
 
-import com.learning.missionspace.data.Item;
-import com.learning.missionspace.rockets.Rocket;
-import com.learning.missionspace.rockets.impl.U1;
-import com.learning.missionspace.rockets.impl.U2;
+import com.learning.projects.missionspace.data.Item;
+import com.learning.projects.missionspace.rockets.Rocket;
+import com.learning.projects.missionspace.rockets.impl.U1;
+import com.learning.projects.missionspace.rockets.impl.U2;
 import com.learning.utils.Console;
 
 import java.nio.file.Path;
@@ -32,10 +32,10 @@ public class Simulation {
             if (u1.canCarry(item)) {
                 u1.carry(item);
             } else {
-                Console.log("[U1] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash");
+                Console.log("[U1] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash", true);
                 u1.setChanceOfLaunchExplosion();
                 u1.setChanceOfLandingCrash();
-                Console.log("[U1] Creating new U1 rocket");
+                Console.log("[U1] Creating new U1 rocket", true);
                 u1Rockets.add(u1);
                 u1 = new U1();
                 u1.carry(item);
@@ -54,10 +54,10 @@ public class Simulation {
             if (u2.canCarry(item)) {
                 u2.carry(item);
             } else {
-                Console.log("[U2] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash");
+                Console.log("[U2] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash", true);
                 u2.setChanceOfLaunchExplosion();
                 u2.setChanceOfLandingCrash();
-                Console.log("[U2] Creating new U2 rocket");
+                Console.log("[U2] Creating new U2 rocket", true);
                 u2Rockets.add(u2);
                 u2 = new U2();
                 u2.carry(item);

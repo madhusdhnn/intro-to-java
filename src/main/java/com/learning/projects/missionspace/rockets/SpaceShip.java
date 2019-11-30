@@ -1,6 +1,6 @@
-package com.learning.missionspace.rockets;
+package com.learning.projects.missionspace.rockets;
 
-import com.learning.missionspace.data.Item;
+import com.learning.projects.missionspace.data.Item;
 
 public interface SpaceShip {
 

@@ -1,6 +1,6 @@
-package com.learning.guessmovie.game;
+package com.learning.projects.guessmovie.game;
 
-import com.learning.guessmovie.data.Movie;
+import com.learning.projects.guessmovie.data.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

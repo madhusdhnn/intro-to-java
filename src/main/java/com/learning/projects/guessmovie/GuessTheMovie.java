@@ -1,11 +1,14 @@
-package com.learning.guessmovie;
+package com.learning.projects.guessmovie;
 
-import com.learning.guessmovie.data.Movie;
-import com.learning.guessmovie.game.MovieGuessGame;
-import com.learning.guessmovie.game.Result;
+import com.learning.projects.guessmovie.data.Movie;
+import com.learning.projects.guessmovie.game.MovieGuessGame;
+import com.learning.projects.guessmovie.game.Result;
 import com.learning.utils.Console;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -14,22 +17,22 @@ import java.util.stream.Collectors;
 
 import static com.learning.utils.FileUtils.readFile;
 
-public class Main {
+public class GuessTheMovie implements Runnable {
 
     private static final String MOVIES_FILE = "movies.txt";
     private static final String FILE_PATH = "data" + File.separator + MOVIES_FILE;
 
-    public static void main(String[] args) {
-        Main main = new Main();
+    @Override
+    public void run() {
+        GuessTheMovie guessTheMovie = new GuessTheMovie();
         Path filePath = Paths.get("src", "main", "resources", FILE_PATH);
         List<Movie> movies = readFile(filePath, lines -> lines.map(Movie::new).collect(Collectors.toList()));
         Movie randomMovie = movies.get(new Random().nextInt(movies.size()));
-        main.playGame(randomMovie);
+        guessTheMovie.playGame(randomMovie);
     }
 
     private void playGame(Movie pickedMovie) {
-        try (InputStream is = System.in;
-             InputStreamReader isr = new InputStreamReader(is);
+        try (InputStreamReader isr = new InputStreamReader(System.in);
              BufferedReader reader = new BufferedReader(isr)) {
 
             final MovieGuessGame movieGuessGame = MovieGuessGame.getInstance();
@@ -43,7 +46,7 @@ public class Main {
                 char ch = read(reader);
                 if (!movieGuessGame.guess(ch)) {
                     chances--;
-                    Console.log(String.format("No of chances left: %d", chances));
+                    Console.log(String.format("No of chances left: %d", chances), true);
                 } else {
                     if (movieGuessGame.isCompleted()) {
                         break;
@@ -60,12 +63,12 @@ public class Main {
     }
 
     private static void showResult(Result result) {
-        Console.log(result.getResult());
-        Console.log(result.getMessage());
+        Console.log(result.getResult(), true);
+        Console.log(result.getMessage(), true);
     }
 
     private static char read(BufferedReader reader) throws IOException {
-        System.out.print("Guess a letter:");
+        System.out.print(String.format("[%s] Guess a letter:", Thread.currentThread().getName()));
         return reader.readLine().charAt(0);
     }
 
@@ -83,11 +86,11 @@ public class Main {
     }
 
     private static void showRemainingGuess(MovieGuessGame movieGuessGame) {
-        Console.log(String.format("You are guessing: %s", movieGuessGame.getBlanks()));
+        Console.log(String.format("You are guessing: %s", movieGuessGame.getBlanks()), true);
     }
 
     private static void showWrongGuesses(MovieGuessGame movieGuessGame) {
-        Console.log(String.format("You have guessed (%d) wrong letters: %s", movieGuessGame.getNumberOfWrongLetters(), movieGuessGame.getWrongLetters()));
+        Console.log(String.format("You have guessed (%d) wrong letters: %s", movieGuessGame.getNumberOfWrongLetters(), movieGuessGame.getWrongLetters()), true);
     }
 
 }
