@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.learning.utils.FileUtils.readFile;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class GuessTheMovie implements Runnable {
 
@@ -37,6 +38,8 @@ public class GuessTheMovie implements Runnable {
             int chances = movieGuessGame.getTotalChances();
             showWelcome(chances);
 
+            long startTime = System.currentTimeMillis();
+
             movieGuessGame.start(pickedMovie);
             showGuess(movieGuessGame);
 
@@ -56,7 +59,9 @@ public class GuessTheMovie implements Runnable {
             }
 
             Result result = movieGuessGame.stop();
-            showResult(result);
+            long endTime = System.currentTimeMillis();
+
+            showResult(result, (endTime - startTime));
         });
     }
 
@@ -69,9 +74,10 @@ public class GuessTheMovie implements Runnable {
         }
     }
 
-    private static void showResult(Result result) {
+    private static void showResult(Result result, long timeTakenInMillis) {
         Console.log(result.getResult(), true);
         Console.log(result.getMessage(), true);
+        Console.log(String.format("Time taken: %d (sec)", MILLISECONDS.toSeconds(timeTakenInMillis)), true);
     }
 
     private static char read(BufferedReader reader) throws IOException {
