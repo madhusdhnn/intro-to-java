@@ -9,14 +9,20 @@ import java.util.stream.IntStream;
 
 public class MovieGuessGame {
 
-    private static final MovieGuessGame INSTANCE = new MovieGuessGame();
-    private static final int CHANCES = 10;
+    private static final MovieGuessGame INSTANCE;
+    private static final int CHANCES;
+
+    static {
+        INSTANCE = new MovieGuessGame();
+        CHANCES = 10;
+    }
+
     private final List<String> wrongLetters = new ArrayList<>();
 
     private String blanks = "";
     private Movie pickedMovie = null;
 
-    private boolean completed = false;
+    private boolean finished = true;
     private boolean started = false;
 
     private MovieGuessGame() {
@@ -42,13 +48,15 @@ public class MovieGuessGame {
         return this.wrongLetters.size();
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isFinished() {
+        return finished;
     }
 
     public void start(Movie pickedMovie) {
+        checkGameFinished();
         this.pickedMovie = pickedMovie;
         this.started = true;
+        this.finished = false;
         this.blanks = getInitialBlanks(pickedMovie.getName().length());
     }
 
@@ -60,7 +68,7 @@ public class MovieGuessGame {
             if (blanks.indexOf(ch) == -1)
                 updateBlanks(ch);
             if (this.blanks.equalsIgnoreCase(name)) {
-                completed = true;
+                finished = true;
             }
         } else {
             if (this.wrongLetters.indexOf(character) == -1) {
@@ -73,6 +81,8 @@ public class MovieGuessGame {
 
     public Result stop() {
         checkGameStarted();
+        this.started = false;
+        this.finished = true;
         String name = pickedMovie.getName();
         return (this.wrongLetters.isEmpty() || this.blanks.equals(name))
                 ? new Result("You win!", String.format("You have guessed \'%s\' correctly", name))
@@ -100,6 +110,12 @@ public class MovieGuessGame {
     private void checkGameStarted() {
         if (!this.started)
             throw new RuntimeException("Please start a new game");
+    }
+
+    private void checkGameFinished() {
+        if (!this.finished) {
+            throw new RuntimeException("Game has already started");
+        }
     }
 
     private String getInitialBlanks(int length) {

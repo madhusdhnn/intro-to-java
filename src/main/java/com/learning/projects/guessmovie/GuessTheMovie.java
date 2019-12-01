@@ -1,6 +1,7 @@
 package com.learning.projects.guessmovie;
 
 import com.learning.projects.guessmovie.data.Movie;
+import com.learning.projects.guessmovie.data.ThrowableConsumer;
 import com.learning.projects.guessmovie.game.MovieGuessGame;
 import com.learning.projects.guessmovie.game.Result;
 import com.learning.utils.Console;
@@ -31,9 +32,7 @@ public class GuessTheMovie implements Runnable {
     }
 
     private void playGame(Movie pickedMovie) {
-        try (InputStreamReader isr = new InputStreamReader(System.in);
-             BufferedReader reader = new BufferedReader(isr)) {
-
+        withReader(reader -> {
             final MovieGuessGame movieGuessGame = MovieGuessGame.getInstance();
             int chances = movieGuessGame.getTotalChances();
             showWelcome(chances);
@@ -43,11 +42,13 @@ public class GuessTheMovie implements Runnable {
 
             while (chances > 0) {
                 char ch = read(reader);
-                if (!movieGuessGame.guess(ch)) {
+                if (ch == '\0') {
+                    Console.log("WARNING: Enter a valid character");
+                } else if (!movieGuessGame.guess(ch)) {
                     chances--;
                     Console.log(String.format("No of chances left: %d", chances), true);
                 } else {
-                    if (movieGuessGame.isCompleted()) {
+                    if (movieGuessGame.isFinished()) {
                         break;
                     }
                 }
@@ -56,6 +57,13 @@ public class GuessTheMovie implements Runnable {
 
             Result result = movieGuessGame.stop();
             showResult(result);
+        });
+    }
+
+    private static void withReader(ThrowableConsumer<BufferedReader> consumer) {
+        try (InputStreamReader isr = new InputStreamReader(System.in);
+             BufferedReader reader = new BufferedReader(isr)) {
+            consumer.accept(reader);
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
@@ -68,7 +76,8 @@ public class GuessTheMovie implements Runnable {
 
     private static char read(BufferedReader reader) throws IOException {
         System.out.print(String.format("[%s] Guess a letter:", Thread.currentThread().getName()));
-        return reader.readLine().charAt(0);
+        String input = reader.readLine();
+        return (input == null || input.isEmpty()) ? '\0' : input.charAt(0);
     }
 
     private static void showWelcome(int chances) {
