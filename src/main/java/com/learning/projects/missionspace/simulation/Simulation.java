@@ -29,17 +29,15 @@ public class Simulation {
         final List<U1> u1Rockets = new ArrayList<>();
         U1 u1 = new U1();
         for (Item item : items) {
-            if (u1.canCarry(item)) {
-                u1.carry(item);
-            } else {
+            if (!u1.canCarry(item)) {
                 Console.log("[U1] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash", true);
                 u1.setChanceOfLaunchExplosion();
                 u1.setChanceOfLandingCrash();
                 Console.log("[U1] Creating new U1 rocket", true);
                 u1Rockets.add(u1);
                 u1 = new U1();
-                u1.carry(item);
             }
+            u1.carry(item);
         }
         if (u1.getTotalWeight() > 0) {
             u1Rockets.add(u1);
@@ -51,17 +49,15 @@ public class Simulation {
         final List<U2> u2Rockets = new ArrayList<>();
         U2 u2 = new U2();
         for (Item item : items) {
-            if (u2.canCarry(item)) {
-                u2.carry(item);
-            } else {
+            if (!u2.canCarry(item)) {
                 Console.log("[U2] Can not carry item. Max weight reached. Setting up chance of launch explosion and landing crash", true);
                 u2.setChanceOfLaunchExplosion();
                 u2.setChanceOfLandingCrash();
                 Console.log("[U2] Creating new U2 rocket", true);
                 u2Rockets.add(u2);
                 u2 = new U2();
-                u2.carry(item);
             }
+            u2.carry(item);
         }
         if (u2.getTotalWeight() > 0) {
             u2Rockets.add(u2);

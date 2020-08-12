@@ -1,5 +1,6 @@
 package com.learning.projects.missionspace;
 
+import com.learning.projects.Game;
 import com.learning.projects.missionspace.data.Item;
 import com.learning.projects.missionspace.rockets.impl.U1;
 import com.learning.projects.missionspace.rockets.impl.U2;
@@ -9,7 +10,7 @@ import com.learning.utils.Console;
 import java.io.File;
 import java.util.List;
 
-public class MissionSpace implements Runnable {
+public class MissionSpace implements Game {
 
     private static final String PHASE_ONE_FILE = "phase-1.txt";
     private static final String PHASE_ONE_FILE_PATH = "data" + File.separator + PHASE_ONE_FILE;

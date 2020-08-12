@@ -7,9 +7,9 @@ group 'com.learning'
 sourceCompatibility = 1.8
 
 jar {
-    version '0.1.0'
+    version '0.1.1'
     manifest {
-        attributes('Main-Class': 'com.learning.projects.Main')
+        attributes('Main-Class': 'com.learning.Main')
     }
 }
 

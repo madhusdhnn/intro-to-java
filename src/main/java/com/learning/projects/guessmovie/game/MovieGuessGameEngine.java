@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MovieGuessGame {
+import static com.learning.utils.StringUtils.toCapitalize;
 
-    private static final MovieGuessGame INSTANCE;
+public class MovieGuessGameEngine {
+
+    private static final MovieGuessGameEngine INSTANCE;
     private static final int CHANCES;
 
     static {
-        INSTANCE = new MovieGuessGame();
+        INSTANCE = new MovieGuessGameEngine();
         CHANCES = 10;
     }
 
@@ -25,10 +27,10 @@ public class MovieGuessGame {
     private boolean finished = true;
     private boolean started = false;
 
-    private MovieGuessGame() {
+    private MovieGuessGameEngine() {
     }
 
-    public static MovieGuessGame getInstance() {
+    public static MovieGuessGameEngine getInstance() {
         return INSTANCE;
     }
 
@@ -54,10 +56,12 @@ public class MovieGuessGame {
 
     public void start(Movie pickedMovie) {
         checkGameFinished();
-        this.pickedMovie = pickedMovie;
-        this.started = true;
-        this.finished = false;
-        this.blanks = getInitialBlanks(pickedMovie.getName().length());
+        synchronized (this) {
+            this.pickedMovie = pickedMovie;
+            this.started = true;
+            this.finished = false;
+            this.blanks = getInitialBlanks(pickedMovie.getName().length());
+        }
     }
 
     public boolean guess(char ch) {
@@ -65,31 +69,39 @@ public class MovieGuessGame {
         String name = pickedMovie.getName();
         String character = String.valueOf(ch);
         if (name.contains(character)) {
-            if (blanks.indexOf(ch) == -1)
+            if (this.blanks.indexOf(ch) == -1)
                 updateBlanks(ch);
-            if (this.blanks.equalsIgnoreCase(name)) {
-                finished = true;
-            }
+            finishGameIfCompleted(name);
+            return true;
         } else {
-            if (this.wrongLetters.indexOf(character) == -1) {
+            if (!this.wrongLetters.contains(character)) {
                 this.wrongLetters.add(character);
-                return false;
             }
+            return false;
         }
-        return true;
     }
 
     public Result stop() {
         checkGameStarted();
-        this.started = false;
-        this.finished = true;
+        synchronized (this) {
+            this.started = false;
+            this.finished = true;
+        }
         String name = pickedMovie.getName();
         return (this.wrongLetters.isEmpty() || this.blanks.equals(name))
-                ? new Result("You win!", String.format("You have guessed \'%s\' correctly", name))
-                : new Result("You lost!", String.format("The movie is \'%s\'", name));
+                ? new Result("You win!", String.format("You have guessed '%s' correctly", toCapitalize(name)))
+                : new Result("You lost!", String.format("The movie is '%s'", toCapitalize(name)));
     }
 
-    private void updateBlanks(char guessedCharacter) {
+    private void finishGameIfCompleted(String name) {
+        synchronized (this) {
+            if (this.blanks.equalsIgnoreCase(name)) {
+                this.finished = true;
+            }
+        }
+    }
+
+    private synchronized void updateBlanks(char guessedCharacter) {
         String movieName = this.pickedMovie.getName();
 
         char[] movieNameChars = movieName.toCharArray();
@@ -97,10 +109,8 @@ public class MovieGuessGame {
 
         for (int i = 0; i < movieNameChars.length; i++) {
             char ch;
-            if ((ch = movieNameChars[i]) == guessedCharacter || ch == 32) {
-                if (blankChars[i] == '-') {
-                    blankChars[i] = ch;
-                }
+            if ((ch = movieNameChars[i]) == guessedCharacter || ch == 32 && blankChars[i] == '-') {
+                blankChars[i] = ch;
             }
         }
 

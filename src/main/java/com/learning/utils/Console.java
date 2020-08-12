@@ -8,9 +8,9 @@ public class Console {
 
     public static void log(String message, boolean showThreadName) {
         if (showThreadName) {
-            System.out.println(String.format("[%s] %s", Thread.currentThread().getName(), message));
+            System.out.printf("[%s] %s%n", Thread.currentThread().getName(), message);
         } else {
-            System.out.println(String.format("%s", message));
+            System.out.printf("%s%n", message);
         }
     }
 
