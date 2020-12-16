@@ -1,6 +1,6 @@
 package com.learning.projects.guessmovie;
 
-import com.learning.projects.Game;
+import com.learning.projects.DesignProblem;
 import com.learning.projects.guessmovie.data.Movie;
 import com.learning.projects.guessmovie.data.ThrowableConsumer;
 import com.learning.projects.guessmovie.game.MovieGuessGameEngine;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static com.learning.utils.FileUtils.readFile;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class GuessTheMovie implements Game {
+public class GuessTheMovie implements DesignProblem {
 
     private static final String MOVIES_FILE = "movies.txt";
     private static final String FILE_PATH = "data" + File.separator + MOVIES_FILE;
